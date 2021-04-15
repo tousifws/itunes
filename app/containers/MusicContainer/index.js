@@ -47,7 +47,7 @@ export function MusicContainer({
   intl,
   musicsData = {},
   musicsError = null,
-  searchQuery,
+  searchTerm,
   maxwidth,
   padding
 }) {
@@ -63,8 +63,8 @@ export function MusicContainer({
   }, [musicsData]);
 
   useEffect(() => {
-    if (searchQuery && !musicsData?.items?.length) {
-      dispatchItunesMusics(searchQuery);
+    if (searchTerm && !musicsData?.items?.length) {
+      dispatchItunesMusics(searchTerm);
       setLoading(true);
     }
   }, []);
@@ -89,9 +89,9 @@ export function MusicContainer({
       (items.length !== 0 || loading) && (
         <CustomCard>
           <Skeleton loading={loading} active>
-            {searchQuery && (
+            {searchTerm && (
               <div>
-                <T id="search_query" values={{ searchQuery }} />
+                <T id="search_query" values={{ searchTerm }} />
               </div>
             )}
             {totalCount !== 0 && (
@@ -140,7 +140,7 @@ export function MusicContainer({
         <T marginBottom={10} id="get_music_details" />
         <Search
           data-testid="search-bar"
-          defaultValue={searchQuery}
+          defaultValue={searchTerm}
           type="text"
           onChange={evt => debouncedHandleOnChange(evt.target.value)}
           onSearch={searchText => debouncedHandleOnChange(searchText)}
@@ -163,7 +163,7 @@ MusicContainer.propTypes = {
     items: PropTypes.array
   }),
   musicsError: PropTypes.string,
-  searchQuery: PropTypes.string,
+  searchTerm: PropTypes.string,
   history: PropTypes.object,
   maxwidth: PropTypes.number,
   padding: PropTypes.number
@@ -178,14 +178,14 @@ const mapStateToProps = createStructuredSelector({
   MusicContainer: selectMusicContainer(),
   musicsData: selectMusicsData(),
   musicsError: selectMusicsError(),
-  searchQuery: selectMusicTitle()
+  searchTerm: selectMusicTitle()
 });
 
 function mapDispatchToProps(dispatch) {
   const { requestGetItunesMusics, clearItunesMusics } = musicContainerCreators;
 
   return {
-    dispatchItunesMusics: searchQuery => dispatch(requestGetItunesMusics(searchQuery)),
+    dispatchItunesMusics: searchTerm => dispatch(requestGetItunesMusics(searchTerm)),
     dispatchClearItunesMusics: () => dispatch(clearItunesMusics())
   };
 }
