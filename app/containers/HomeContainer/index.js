@@ -90,7 +90,7 @@ export function HomeContainer({
           <Skeleton loading={loading} active>
             {repoName && (
               <div>
-                <T id="search_query" values={{ repoName }} />
+                <T id="search_query" values={{ query: repoName }} />
               </div>
             )}
             {totalCount !== 0 && (
@@ -132,8 +132,7 @@ export function HomeContainer({
   };
 
   const gotToMusics = () => {
-    history.push('/musics');
-    window.location.reload();
+    history.push('/tracks');
   };
 
   return (

@@ -34,10 +34,10 @@ export const selectMusicsError = () =>
     substate => get(substate, 'musicsError', null)
   );
 
-export const selectMusicTitle = () =>
+export const selectMusicSearchTerm = () =>
   createSelector(
     selectMusicContainerDomain,
-    substate => get(substate, 'searchQuery', null)
+    substate => get(substate, 'searchTerm', null)
   );
 
 export default selectMusicContainer;

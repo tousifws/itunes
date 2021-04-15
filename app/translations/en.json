@@ -3,7 +3,7 @@
   "repo_search": "Repository Search",
   "respo_search_default": "Search for a repository by entering it's name in the search box",
   "get_repo_details": "Get details of repositories",
-  "search_query": "Search query: {repoName}",
+  "search_query": "Search query: {query}",
   "matching_repos": "Total number of matching repos: {totalCount}",
   "something_went_wrong": "Sorry. Something went wrong! Please try again in sometime.",
   "stories": "Go to Storybook",
@@ -19,5 +19,6 @@
   "music_title": "Music Title: {title}",
   "artist_name": "Artist: {artistName}",
   "music_collection_name": "Music collection name: {collectionName}",
-  "matching_musics": "Total number of matching musics: {totalCount}"
+  "matching_musics": "Total number of matching tracks: {totalCount}",
+  "home": "Go to Home page"
 }

@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import T from '@components/T';
 import Clickable from '@components/Clickable';
 import { useInjectSaga } from 'utils/injectSaga';
-import { selectMusicContainer, selectMusicsData, selectMusicsError, selectMusicTitle } from './selectors';
+import { selectMusicContainer, selectMusicsData, selectMusicsError, selectMusicSearchTerm } from './selectors';
 import { musicContainerCreators } from './reducer';
 import saga from './saga';
 
@@ -27,6 +27,7 @@ const CustomCard = styled(Card)`
     ${props => props.color && `color: ${props.color}`};
   }
 `;
+
 const Container = styled.div`
   && {
     display: flex;
@@ -37,10 +38,13 @@ const Container = styled.div`
     padding: ${props => props.padding}px;
   }
 `;
+
 const RightContent = styled.div`
   display: flex;
+  flex-direction: column;
   align-self: flex-end;
 `;
+
 export function MusicContainer({
   dispatchItunesMusics,
   dispatchClearItunesMusics,
@@ -56,14 +60,14 @@ export function MusicContainer({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loaded = get(musicsData, 'items', null) || musicsError;
+    const loaded = get(musicsData, 'results', null) || musicsError;
     if (loading && loaded) {
       setLoading(false);
     }
   }, [musicsData]);
 
   useEffect(() => {
-    if (searchTerm && !musicsData?.items?.length) {
+    if (searchTerm && !musicsData?.results?.length) {
       dispatchItunesMusics(searchTerm);
       setLoading(true);
     }
@@ -71,14 +75,15 @@ export function MusicContainer({
 
   const history = useHistory();
 
-  const handleOnChange = rName => {
-    if (!isEmpty(rName)) {
-      dispatchItunesMusics(rName);
+  const handleOnChange = searchTerm => {
+    if (!isEmpty(searchTerm)) {
+      dispatchItunesMusics(searchTerm);
       setLoading(true);
     } else {
       dispatchClearItunesMusics();
     }
   };
+
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
 
   const renderMusicList = () => {
@@ -91,7 +96,7 @@ export function MusicContainer({
           <Skeleton loading={loading} active>
             {searchTerm && (
               <div>
-                <T id="search_query" values={{ searchTerm }} />
+                <T id="search_query" values={{ query: searchTerm }} />
               </div>
             )}
             {totalCount !== 0 && (
@@ -101,9 +106,14 @@ export function MusicContainer({
             )}
             {items.map((item, index) => (
               <CustomCard key={index}>
-                <T id="music_title" values={{ title: item.trackName }} />
-                <T id="artist_name" values={{ artistName: item.artistName }} />
-                <T id="music_collection_name" values={{ collectionName: item.collectionName }} />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <img src={item.artworkUrl60} alt="music artwork" />
+                  <div style={{ paddingLeft: '0.6em' }}>
+                    <T id="music_title" values={{ title: item.trackName }} />
+                    <T id="artist_name" values={{ artistName: item.artistName }} />
+                    <T id="music_collection_name" values={{ collectionName: item.collectionName }} />
+                  </div>
+                </div>
               </CustomCard>
             ))}
           </Skeleton>
@@ -111,31 +121,40 @@ export function MusicContainer({
       )
     );
   };
+
   const renderErrorState = () => {
-    let repoError;
+    let musicError;
     if (musicsError) {
-      repoError = musicsError;
+      musicError = musicsError;
     } else if (!get(musicsData, 'totalCount', 0)) {
-      repoError = 'music_search_default';
+      musicError = 'music_search_default';
     }
     return (
       !loading &&
-      repoError && (
+      musicError && (
         <CustomCard color={musicsError ? 'red' : 'grey'} title={intl.formatMessage({ id: 'music_list' })}>
-          <T id={repoError} />
+          <T id={musicError} />
         </CustomCard>
       )
     );
   };
-  const refreshPage = () => {
-    history.push('stories');
+
+  const gotToStoriesPage = () => {
+    history.push('/stories');
     window.location.reload();
   };
+
+  const gotToHomePage = () => {
+    history.push('/');
+  };
+
   return (
     <Container maxwidth={maxwidth} padding={padding}>
       <RightContent>
-        <Clickable textId="stories" onClick={refreshPage} />
+        <Clickable textId="stories" onClick={gotToStoriesPage} />
+        <Clickable textId="home" onClick={gotToHomePage} />
       </RightContent>
+
       <CustomCard title={intl.formatMessage({ id: 'music_search' })} maxwidth={maxwidth}>
         <T marginBottom={10} id="get_music_details" />
         <Search
@@ -175,10 +194,10 @@ MusicContainer.defaultProps = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  MusicContainer: selectMusicContainer(),
+  musicContainer: selectMusicContainer(),
   musicsData: selectMusicsData(),
   musicsError: selectMusicsError(),
-  searchTerm: selectMusicTitle()
+  searchTerm: selectMusicSearchTerm()
 });
 
 function mapDispatchToProps(dispatch) {
