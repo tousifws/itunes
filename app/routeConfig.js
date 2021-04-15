@@ -6,6 +6,10 @@ export const routeConfig = {
     component: HomeContainer,
     ...routeConstants.repos
   },
+  musics: {
+    component: MusicContainer,
+    ...routeConstants.musics
+  },
   notFoundPage: {
     component: NotFound,
     route: '/'
