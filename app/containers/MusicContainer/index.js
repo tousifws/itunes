@@ -126,9 +126,10 @@ export function MusicContainer({
     let error;
     if (error) {
       error = musicError;
-    } else if (!get(musicData, 'totalCount', 0)) {
+    } else if (!get(musicData, 'resultCount', 0)) {
       error = 'music_search_default';
     }
+
     return (
       !loading &&
       error && (

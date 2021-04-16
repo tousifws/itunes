@@ -37,9 +37,9 @@ function MusicCard({ artworkUrl, title, artistName, collectionName, onClick }) {
 
 MusicCard.propTypes = {
   artworkUrl: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   artistName: PropTypes.string.isRequired,
-  collectionName: PropTypes.string.isRequired,
+  collectionName: PropTypes.string,
   onClick: PropTypes.func
 };
 
