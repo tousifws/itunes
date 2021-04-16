@@ -6,7 +6,7 @@ const { REQUEST_GET_ITUNES_MUSICS } = musicContainerTypes;
 const { successGetItunesMusics, failureGetItunesMusics } = musicContainerCreators;
 
 export function* getItunesMusics(action) {
-  const response = yield call(getMusics, action.searchQuery);
+  const response = yield call(getMusics, action.searchTerm);
   const { data, ok } = response;
 
   if (ok) {

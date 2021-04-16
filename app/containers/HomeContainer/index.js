@@ -131,7 +131,7 @@ export function HomeContainer({
     window.location.reload();
   };
 
-  const gotToMusics = () => {
+  const gotToTracks = () => {
     history.push('/tracks');
   };
 
@@ -139,7 +139,7 @@ export function HomeContainer({
     <Container maxwidth={maxwidth} padding={padding}>
       <RightContent>
         <Clickable textId="stories" onClick={refreshPage} />
-        <Clickable textId="musics" onClick={gotToMusics} />
+        <Clickable textId="musics" onClick={gotToTracks} />
       </RightContent>
       <CustomCard title={intl.formatMessage({ id: 'repo_search' })} maxwidth={maxwidth}>
         <T marginBottom={10} id="get_repo_details" />

@@ -56,7 +56,7 @@ export function MusicContainer({
   padding
 }) {
   // console.log("musicsData", musicsData);
-  useInjectSaga({ key: 'MusicContainer', saga });
+  useInjectSaga({ key: 'musicContainer', saga });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
