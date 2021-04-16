@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import get from 'lodash/get';
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
-import { Card, Skeleton, Input } from 'antd';
+import { Card, Skeleton, Input, Avatar } from 'antd';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -18,7 +18,6 @@ import { musicContainerCreators } from './reducer';
 import saga from './saga';
 
 const { Search } = Input;
-
 const CustomCard = styled(Card)`
   && {
     margin: 20px 0;
@@ -43,6 +42,11 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   align-self: flex-end;
+`;
+
+const MusicContent = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export function MusicContainer({
@@ -106,14 +110,14 @@ export function MusicContainer({
             )}
             {items.map((item, index) => (
               <CustomCard key={index}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <img src={item.artworkUrl60} alt="music artwork" />
+                <MusicContent>
+                  <Avatar src={item.artworkUrl100} shape="square" size={100} />
                   <div style={{ paddingLeft: '0.6em' }}>
                     <T id="music_title" values={{ title: item.trackName }} />
                     <T id="artist_name" values={{ artistName: item.artistName }} />
                     <T id="music_collection_name" values={{ collectionName: item.collectionName }} />
                   </div>
-                </div>
+                </MusicContent>
               </CustomCard>
             ))}
           </Skeleton>
