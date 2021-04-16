@@ -39,6 +39,7 @@ const Container = styled.div`
 `;
 const RightContent = styled.div`
   display: flex;
+  flex-direction: column;
   align-self: flex-end;
 `;
 export function HomeContainer({
@@ -89,7 +90,7 @@ export function HomeContainer({
           <Skeleton loading={loading} active>
             {repoName && (
               <div>
-                <T id="search_query" values={{ repoName }} />
+                <T id="search_query" values={{ query: repoName }} />
               </div>
             )}
             {totalCount !== 0 && (
@@ -129,10 +130,16 @@ export function HomeContainer({
     history.push('stories');
     window.location.reload();
   };
+
+  const gotToTracks = () => {
+    history.push('/tracks');
+  };
+
   return (
     <Container maxwidth={maxwidth} padding={padding}>
       <RightContent>
         <Clickable textId="stories" onClick={refreshPage} />
+        <Clickable textId="tracks" onClick={gotToTracks} />
       </RightContent>
       <CustomCard title={intl.formatMessage({ id: 'repo_search' })} maxwidth={maxwidth}>
         <T marginBottom={10} id="get_repo_details" />
