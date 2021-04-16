@@ -139,7 +139,7 @@ export function HomeContainer({
     <Container maxwidth={maxwidth} padding={padding}>
       <RightContent>
         <Clickable textId="stories" onClick={refreshPage} />
-        <Clickable textId="musics" onClick={gotToTracks} />
+        <Clickable textId="tracks" onClick={gotToTracks} />
       </RightContent>
       <CustomCard title={intl.formatMessage({ id: 'repo_search' })} maxwidth={maxwidth}>
         <T marginBottom={10} id="get_repo_details" />

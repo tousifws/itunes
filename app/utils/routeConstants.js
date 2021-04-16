@@ -7,7 +7,7 @@ export default {
     },
     exact: true
   },
-  musics: {
+  music: {
     route: '/tracks',
     props: {
       maxwidth: 500,

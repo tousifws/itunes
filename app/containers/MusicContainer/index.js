@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import T from '@components/T';
 import Clickable from '@components/Clickable';
 import { useInjectSaga } from 'utils/injectSaga';
-import { selectMusicContainer, selectMusicsData, selectMusicsError, selectMusicSearchTerm } from './selectors';
+import { selectMusicContainer, selectTracksData, selectTracksError, selectMusicSearchTerm } from './selectors';
 import { musicContainerCreators } from './reducer';
 import saga from './saga';
 
@@ -50,29 +50,29 @@ const MusicContent = styled.div`
 `;
 
 export function MusicContainer({
-  dispatchItunesMusics,
-  dispatchClearItunesMusics,
+  dispatchItunesTracks,
+  dispatchClearItunesTracks,
   intl,
-  musicsData = {},
-  musicsError = null,
+  musicData = {},
+  musicError = null,
   searchTerm,
   maxwidth,
   padding
 }) {
-  // console.log("musicsData", musicsData);
+  // console.log("musicData", musicData);
   useInjectSaga({ key: 'musicContainer', saga });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loaded = get(musicsData, 'results', null) || musicsError;
+    const loaded = get(musicData, 'results', null) || musicError;
     if (loading && loaded) {
       setLoading(false);
     }
-  }, [musicsData]);
+  }, [musicData]);
 
   useEffect(() => {
-    if (searchTerm && !musicsData?.results?.length) {
-      dispatchItunesMusics(searchTerm);
+    if (searchTerm && !musicData?.results?.length) {
+      dispatchItunesTracks(searchTerm);
       setLoading(true);
     }
   }, []);
@@ -81,18 +81,18 @@ export function MusicContainer({
 
   const handleOnChange = searchTerm => {
     if (!isEmpty(searchTerm)) {
-      dispatchItunesMusics(searchTerm);
+      dispatchItunesTracks(searchTerm);
       setLoading(true);
     } else {
-      dispatchClearItunesMusics();
+      dispatchClearItunesTracks();
     }
   };
 
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
 
   const renderMusicList = () => {
-    const items = get(musicsData, 'results', []);
-    const totalCount = get(musicsData, 'resultCount', 0);
+    const items = get(musicData, 'results', []);
+    const totalCount = get(musicData, 'resultCount', 0);
 
     return (
       (items.length !== 0 || loading) && (
@@ -105,7 +105,7 @@ export function MusicContainer({
             )}
             {totalCount !== 0 && (
               <div>
-                <T id="matching_musics" values={{ totalCount }} />
+                <T id="matching_music" values={{ totalCount }} />
               </div>
             )}
             {items.map((item, index) => (
@@ -127,17 +127,17 @@ export function MusicContainer({
   };
 
   const renderErrorState = () => {
-    let musicError;
-    if (musicsError) {
-      musicError = musicsError;
-    } else if (!get(musicsData, 'totalCount', 0)) {
-      musicError = 'music_search_default';
+    let error;
+    if (error) {
+      error = musicError;
+    } else if (!get(musicData, 'totalCount', 0)) {
+      error = 'music_search_default';
     }
     return (
       !loading &&
-      musicError && (
-        <CustomCard color={musicsError ? 'red' : 'grey'} title={intl.formatMessage({ id: 'music_list' })}>
-          <T id={musicError} />
+      error && (
+        <CustomCard color={error ? 'red' : 'grey'} title={intl.formatMessage({ id: 'music_list' })}>
+          <T id={error} />
         </CustomCard>
       )
     );
@@ -177,15 +177,15 @@ export function MusicContainer({
 }
 
 MusicContainer.propTypes = {
-  dispatchItunesMusics: PropTypes.func,
-  dispatchClearItunesMusics: PropTypes.func,
+  dispatchItunesTracks: PropTypes.func,
+  dispatchClearItunesTracks: PropTypes.func,
   intl: PropTypes.object,
-  musicsData: PropTypes.shape({
+  musicData: PropTypes.shape({
     totalCount: PropTypes.number,
     incompleteResults: PropTypes.bool,
     items: PropTypes.array
   }),
-  musicsError: PropTypes.string,
+  musicError: PropTypes.string,
   searchTerm: PropTypes.string,
   history: PropTypes.object,
   maxwidth: PropTypes.number,
@@ -199,17 +199,17 @@ MusicContainer.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   musicContainer: selectMusicContainer(),
-  musicsData: selectMusicsData(),
-  musicsError: selectMusicsError(),
+  musicData: selectTracksData(),
+  musicError: selectTracksError(),
   searchTerm: selectMusicSearchTerm()
 });
 
 function mapDispatchToProps(dispatch) {
-  const { requestGetItunesMusics, clearItunesMusics } = musicContainerCreators;
+  const { requestGetItunesTracks, clearItunesTracks } = musicContainerCreators;
 
   return {
-    dispatchItunesMusics: searchTerm => dispatch(requestGetItunesMusics(searchTerm)),
-    dispatchClearItunesMusics: () => dispatch(clearItunesMusics())
+    dispatchItunesTracks: searchTerm => dispatch(requestGetItunesTracks(searchTerm)),
+    dispatchClearItunesTracks: () => dispatch(clearItunesTracks())
   };
 }
 

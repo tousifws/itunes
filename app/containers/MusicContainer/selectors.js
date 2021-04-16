@@ -22,16 +22,16 @@ export const selectMusicContainer = () =>
     substate => substate
   );
 
-export const selectMusicsData = () =>
+export const selectTracksData = () =>
   createSelector(
     selectMusicContainerDomain,
-    substate => get(substate, 'musicsData', null)
+    substate => get(substate, 'musicData', null)
   );
 
-export const selectMusicsError = () =>
+export const selectTracksError = () =>
   createSelector(
     selectMusicContainerDomain,
-    substate => get(substate, 'musicsError', null)
+    substate => get(substate, 'musicError', null)
   );
 
 export const selectMusicSearchTerm = () =>

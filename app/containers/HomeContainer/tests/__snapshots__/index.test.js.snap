@@ -28,7 +28,7 @@ exports[`<HomeContainer /> tests should render and match the snapshot 1`] = `
             class="T__StyledText-gjlic1-0 cbAvsY"
             data-testid="t"
           >
-            Go to Itunes Musics
+            Go to Itunes Tracks
           </p>
         </div>
       </div>
