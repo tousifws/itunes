@@ -8,13 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Card, Avatar } from 'antd';
-// import { FormattedMessage } from 'react-intl';
 import T from '@components/T';
 
 const MusicContent = styled.div`
   display: flex;
   align-items: center;
-  height: 120px;
+  height: 7.5em;
   &:hover {
     cursor: pointer;
   }
