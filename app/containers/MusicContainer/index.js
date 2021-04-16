@@ -6,12 +6,13 @@ import { compose } from 'redux';
 import get from 'lodash/get';
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
-import { Card, Skeleton, Input, Avatar } from 'antd';
+import { Card, Skeleton, Input, Row, Col } from 'antd';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import T from '@components/T';
 import Clickable from '@components/Clickable';
+import MusicCard from '@components/MusicCard';
 import { useInjectSaga } from 'utils/injectSaga';
 import { selectMusicContainer, selectTracksData, selectTracksError, selectMusicSearchTerm } from './selectors';
 import { musicContainerCreators } from './reducer';
@@ -42,11 +43,6 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-`;
-
-const MusicContent = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 export function MusicContainer({
@@ -96,32 +92,32 @@ export function MusicContainer({
 
     return (
       (items.length !== 0 || loading) && (
-        <CustomCard>
+        <div>
+          {searchTerm && (
+            <div>
+              <T id="search_query" values={{ query: searchTerm }} />
+            </div>
+          )}
+          {totalCount !== 0 && (
+            <div>
+              <T id="matching_music" values={{ totalCount }} />
+            </div>
+          )}
           <Skeleton loading={loading} active>
-            {searchTerm && (
-              <div>
-                <T id="search_query" values={{ query: searchTerm }} />
-              </div>
-            )}
-            {totalCount !== 0 && (
-              <div>
-                <T id="matching_music" values={{ totalCount }} />
-              </div>
-            )}
-            {items.map((item, index) => (
-              <CustomCard key={index}>
-                <MusicContent>
-                  <Avatar src={item.artworkUrl100} shape="square" size={100} />
-                  <div style={{ paddingLeft: '0.6em' }}>
-                    <T id="music_title" values={{ title: item.trackName }} />
-                    <T id="artist_name" values={{ artistName: item.artistName }} />
-                    <T id="music_collection_name" values={{ collectionName: item.collectionName }} />
-                  </div>
-                </MusicContent>
-              </CustomCard>
-            ))}
+            <Row justify="center">
+              {items.map((item, index) => (
+                <Col key={index} xs={24} md={16} lg={8}>
+                  <MusicCard
+                    artworkUrl={item.artworkUrl100}
+                    title={item.trackName}
+                    artistName={item.artistName}
+                    collectionName={item.collectionName}
+                  />
+                </Col>
+              ))}
+            </Row>
           </Skeleton>
-        </CustomCard>
+        </div>
       )
     );
   };
@@ -130,9 +126,10 @@ export function MusicContainer({
     let error;
     if (error) {
       error = musicError;
-    } else if (!get(musicData, 'totalCount', 0)) {
+    } else if (!get(musicData, 'resultCount', 0)) {
       error = 'music_search_default';
     }
+
     return (
       !loading &&
       error && (
@@ -153,7 +150,7 @@ export function MusicContainer({
   };
 
   return (
-    <Container maxwidth={maxwidth} padding={padding}>
+    <Container padding={padding}>
       <RightContent>
         <Clickable textId="stories" onClick={gotToStoriesPage} />
         <Clickable textId="home" onClick={gotToHomePage} />
