@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MusicCard /> should render and match the snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="ant-card ant-card-bordered"
+      data-testid="musicCard"
+    >
+      <div
+        class="ant-card-body"
+      >
+        <div
+          class="MusicCard__MusicContent-sc-1l6p3fn-0 kfBPgc"
+        >
+          <span
+            class="ant-avatar ant-avatar-square"
+            style="width: 100px; height: 100px; line-height: 100px; font-size: 18px;"
+          >
+            <span
+              class="ant-avatar-string"
+              style="line-height: 100px; transform: scale(1) translateX(-50%);"
+            />
+          </span>
+          <div
+            style="padding-left: 0.6em;"
+          >
+            <p
+              class="T__StyledText-gjlic1-0 cbAvsY"
+              data-testid="t"
+            >
+              Music Title: 
+            </p>
+            <p
+              class="T__StyledText-gjlic1-0 cbAvsY"
+              data-testid="t"
+            >
+              Artist: 
+            </p>
+            <p
+              class="T__StyledText-gjlic1-0 cbAvsY"
+              data-testid="t"
+            >
+              Music collection name: 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
