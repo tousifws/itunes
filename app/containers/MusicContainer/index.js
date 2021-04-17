@@ -89,6 +89,10 @@ export function MusicContainer({
   const renderMusicList = () => {
     const items = get(musicData, 'results', []);
     const totalCount = get(musicData, 'resultCount', 0);
+    const onClick = (e, trackId) => {
+      history.push(`/track-details/${trackId}`);
+      // window.open(trackViewUrl, '_blank');
+    };
 
     return (
       (items.length !== 0 || loading) && (
@@ -112,6 +116,7 @@ export function MusicContainer({
                     title={item.trackName}
                     artistName={item.artistName}
                     collectionName={item.collectionName}
+                    onClick={e => onClick(e, item.trackId)}
                   />
                 </Col>
               ))}
@@ -178,9 +183,8 @@ MusicContainer.propTypes = {
   dispatchClearItunesTracks: PropTypes.func,
   intl: PropTypes.object,
   musicData: PropTypes.shape({
-    totalCount: PropTypes.number,
-    incompleteResults: PropTypes.bool,
-    items: PropTypes.array
+    resultCount: PropTypes.number,
+    results: PropTypes.array
   }),
   musicError: PropTypes.string,
   searchTerm: PropTypes.string,
