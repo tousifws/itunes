@@ -10,7 +10,13 @@ export default {
   music: {
     route: '/tracks',
     props: {
-      maxwidth: 500,
+      padding: 20
+    },
+    exact: true
+  },
+  trackDetails: {
+    route: '/track-details/:trackId',
+    props: {
       padding: 20
     },
     exact: true

@@ -11,13 +11,15 @@ export const { Types: musicContainerTypes, Creators: musicContainerCreators } = 
   requestGetItunesTracks: ['searchTerm'],
   successGetItunesTracks: ['data'],
   failureGetItunesTracks: ['error'],
+  getTrack: ['trackId'],
   clearItunesTracks: []
 });
 
 export const initialState = {
   searchTerm: null,
   musicData: {},
-  musicError: null
+  musicError: null,
+  track: null
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -33,6 +35,10 @@ export const musicContainerReducer = (state = initialState, action) =>
 
       case musicContainerTypes.SUCCESS_GET_ITUNES_TRACKS:
         draft.musicData = action.data;
+        break;
+
+      case musicContainerTypes.GET_TRACK:
+        draft.track = draft.musicData.results.filter(music => music.trackId === action.trackId)[0] || null;
         break;
 
       case musicContainerTypes.FAILURE_GET_ITUNES_TRACKS:
